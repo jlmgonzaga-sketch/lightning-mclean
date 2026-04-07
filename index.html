@@ -1,1031 +1,464 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lightning McLean – Window Services</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Abril+Fatface&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --cream: #F5EFE0;
-    --pink: #E8836A;
-    --pink-light: #F2B5A0;
-    --navy: #1C3A52;
-    --navy-dark: #122536;
-    --yellow: #F0C040;
-    --white: #FDFAF4;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--cream);
-    font-family: 'DM Sans', sans-serif;
-    color: var(--navy);
-    overflow-x: hidden;
-  }
-
-  /* ── NOISE TEXTURE OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.025;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 200px;
-  }
-
-  /* ── NAV ── */
-  nav {
-    background: var(--cream);
-    border-bottom: 3px solid var(--navy);
-    padding: 18px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .logo {
-    display: flex;
-    flex-direction: column;
-    line-height: 1;
-  }
-
-  .logo-script {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 2rem;
-    color: var(--pink);
-    letter-spacing: -1px;
-  }
-
-  .logo-sub {
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--navy);
-  }
-
-  .logo-star {
-    display: inline-block;
-    margin-right: 4px;
-    color: var(--pink);
-  }
-
-  nav ul {
-    list-style: none;
-    display: flex;
-    gap: 32px;
-  }
-
-  nav ul a {
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.8rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--navy);
-    transition: color 0.2s;
-  }
-
-  nav ul a:hover { color: var(--pink); }
-
-  .nav-cta {
-    background: var(--navy);
-    color: var(--white) !important;
-    padding: 10px 22px;
-    border-radius: 50px;
-    transition: background 0.2s !important;
-  }
-
-  .nav-cta:hover { background: var(--pink) !important; color: var(--white) !important; }
-
-  /* ── HERO ── */
-  .hero {
-    background: var(--navy);
-    position: relative;
-    overflow: hidden;
-    padding: 80px 40px 90px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .hero-stripes {
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 28px,
-      rgba(255,255,255,0.025) 28px,
-      rgba(255,255,255,0.025) 56px
-    );
-  }
-
-  .hero-badge {
-    background: var(--pink);
-    color: var(--white);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 6px 20px;
-    border-radius: 50px;
-    margin-bottom: 28px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    position: relative;
-  }
-
-  .hero h1 {
-    font-family: 'Abril Fatface', cursive;
-    font-size: clamp(3.5rem, 9vw, 7rem);
-    color: var(--white);
-    line-height: 1;
-    letter-spacing: -2px;
-    position: relative;
-    max-width: 800px;
-  }
-
-  .hero h1 span {
-    color: var(--pink);
-    display: block;
-  }
-
-  .hero-sub {
-    color: rgba(255,255,255,0.7);
-    font-size: 1.1rem;
-    max-width: 480px;
-    margin: 24px auto 40px;
-    line-height: 1.65;
-    position: relative;
-  }
-
-  .hero-btns {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    justify-content: center;
-    position: relative;
-  }
-
-  .btn-primary {
-    background: var(--pink);
-    color: var(--white);
-    border: none;
-    padding: 16px 36px;
-    border-radius: 50px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 20px rgba(232,131,106,0.4);
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(232,131,106,0.5);
-  }
-
-  .btn-outline {
-    background: transparent;
-    color: var(--white);
-    border: 2px solid rgba(255,255,255,0.4);
-    padding: 16px 36px;
-    border-radius: 50px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: border-color 0.2s, background 0.2s;
-  }
-
-  .btn-outline:hover {
-    border-color: var(--pink);
-    background: rgba(232,131,106,0.1);
-  }
-
-  /* ── MARQUEE TICKER ── */
-  .ticker {
-    background: var(--pink);
-    color: var(--white);
-    padding: 12px 0;
-    overflow: hidden;
-    border-top: 3px solid var(--navy);
-    border-bottom: 3px solid var(--navy);
-  }
-
-  .ticker-inner {
-    display: flex;
-    white-space: nowrap;
-    animation: ticker 20s linear infinite;
-    gap: 0;
-  }
-
-  .ticker-item {
-    font-weight: 700;
-    font-size: 0.8rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    padding: 0 40px;
-    flex-shrink: 0;
-  }
-
-  .ticker-dot {
-    opacity: 0.5;
-    margin-right: 40px;
-  }
-
-  @keyframes ticker {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* ── ABOUT ── */
-  .section { padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
-
-  .section-label {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--pink);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .section-label::before {
-    content: '';
-    display: inline-block;
-    width: 30px;
-    height: 2px;
-    background: var(--pink);
-  }
-
-  .section-title {
-    font-family: 'Abril Fatface', cursive;
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    color: var(--navy);
-    line-height: 1.05;
-    letter-spacing: -1px;
-    max-width: 600px;
-  }
-
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-    margin-top: 60px;
-  }
-
-  .about-text p {
-    font-size: 1.05rem;
-    line-height: 1.75;
-    color: #3a4a5a;
-    margin-bottom: 20px;
-  }
-
-  .about-visual {
-    background: var(--navy);
-    border-radius: 24px;
-    aspect-ratio: 4/3;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .about-visual-inner {
-    text-align: center;
-    color: var(--white);
-    position: relative;
-    z-index: 1;
-  }
-
-  .about-visual::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 20px,
-      rgba(255,255,255,0.03) 20px,
-      rgba(255,255,255,0.03) 40px
-    );
-  }
-
-  .big-stat {
-    font-family: 'Abril Fatface', cursive;
-    font-size: 5rem;
-    color: var(--pink);
-    line-height: 1;
-    display: block;
-  }
-
-  .stat-label {
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    opacity: 0.6;
-    margin-top: 8px;
-  }
-
-  .stats-row {
-    display: flex;
-    gap: 40px;
-    margin-top: 40px;
-    border-top: 2px solid rgba(28,58,82,0.15);
-    padding-top: 36px;
-  }
-
-  .stat-box { flex: 1; }
-
-  .stat-number {
-    font-family: 'Abril Fatface', cursive;
-    font-size: 2.5rem;
-    color: var(--navy);
-    line-height: 1;
-  }
-
-  .stat-desc {
-    font-size: 0.8rem;
-    color: #7a8a9a;
-    margin-top: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  /* ── SERVICES ── */
-  .services-section {
-    background: var(--navy);
-    padding: 80px 40px;
-  }
-
-  .services-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .services-section .section-label { color: var(--pink-light); }
-  .services-section .section-label::before { background: var(--pink-light); }
-  .services-section .section-title { color: var(--white); }
-
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin-top: 50px;
-  }
-
-  .service-card {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 20px;
-    padding: 36px 30px;
-    transition: transform 0.2s, background 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .service-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--pink);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s;
-  }
-
-  .service-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.09); }
-  .service-card:hover::before { transform: scaleX(1); }
-
-  .service-icon {
-    width: 44px;
-    height: 44px;
-    margin-bottom: 20px;
-    display: block;
-    color: var(--pink-light);
-  }
-
-  .service-name {
-    font-family: 'Abril Fatface', cursive;
-    font-size: 1.4rem;
-    color: var(--white);
-    margin-bottom: 12px;
-    letter-spacing: -0.5px;
-  }
-
-  .service-desc {
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.55);
-    line-height: 1.65;
-  }
-
-  /* ── WHY US ── */
-  .why-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
-    margin-top: 60px;
-  }
-
-  .why-card {
-    background: var(--white);
-    border-radius: 20px;
-    padding: 36px;
-    border: 2px solid transparent;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-
-  .why-card:hover {
-    border-color: var(--pink);
-    transform: translateY(-3px);
-  }
-
-  .why-icon {
-    width: 52px;
-    height: 52px;
-    background: var(--cream);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    border: 2px solid var(--navy);
-  }
-
-  .why-icon svg {
-    width: 24px;
-    height: 24px;
-    stroke: var(--navy);
-    fill: none;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .why-title {
-    font-family: 'Abril Fatface', cursive;
-    font-size: 1.2rem;
-    color: var(--navy);
-    margin-bottom: 10px;
-  }
-
-  .why-desc {
-    font-size: 0.9rem;
-    color: #5a6a7a;
-    line-height: 1.65;
-  }
-
-  /* ── PROCESS ── */
-  .process-section {
-    background: var(--pink);
-    padding: 80px 40px;
-  }
-
-  .process-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .process-section .section-label { color: var(--navy); }
-  .process-section .section-label::before { background: var(--navy); }
-  .process-section .section-title { color: var(--white); }
-
-  .process-steps {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    margin-top: 60px;
-    position: relative;
-  }
-
-  .process-steps::before {
-    content: '';
-    position: absolute;
-    top: 30px;
-    left: 12%;
-    right: 12%;
-    height: 2px;
-    background: rgba(255,255,255,0.3);
-    z-index: 0;
-  }
-
-  .step {
-    text-align: center;
-    position: relative;
-    z-index: 1;
-  }
-
-  .step-num {
-    width: 60px;
-    height: 60px;
-    background: var(--navy);
-    color: var(--white);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Abril Fatface', cursive;
-    font-size: 1.4rem;
-    margin: 0 auto 20px;
-    border: 3px solid var(--white);
-  }
-
-  .step-title {
-    font-family: 'Abril Fatface', cursive;
-    font-size: 1.1rem;
-    color: var(--white);
-    margin-bottom: 8px;
-  }
-
-  .step-desc {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.75);
-    line-height: 1.55;
-  }
-
-  /* ── TESTIMONIALS ── */
-  .testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin-top: 60px;
-  }
-
-  .testimonial {
-    background: var(--white);
-    border-radius: 20px;
-    padding: 32px;
-    border: 2px solid rgba(28,58,82,0.08);
-  }
-
-  .stars {
-    color: var(--yellow);
-    font-size: 0.9rem;
-    margin-bottom: 16px;
-    letter-spacing: 2px;
-  }
-
-  .testimonial-text {
-    font-size: 0.95rem;
-    line-height: 1.7;
-    color: #3a4a5a;
-    font-style: italic;
-    margin-bottom: 20px;
-  }
-
-  .testimonial-author {
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: var(--navy);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  /* ── CTA BAND ── */
-  .cta-band {
-    background: var(--navy-dark);
-    padding: 80px 40px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .cta-band::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 30px,
-      rgba(255,255,255,0.02) 30px,
-      rgba(255,255,255,0.02) 60px
-    );
-  }
-
-  .cta-band h2 {
-    font-family: 'Abril Fatface', cursive;
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
-    color: var(--white);
-    line-height: 1.1;
-    letter-spacing: -1px;
-    margin-bottom: 20px;
-    position: relative;
-  }
-
-  .cta-band h2 span { color: var(--pink); }
-
-  .cta-band p {
-    color: rgba(255,255,255,0.6);
-    font-size: 1rem;
-    max-width: 420px;
-    margin: 0 auto 36px;
-    line-height: 1.65;
-    position: relative;
-  }
-
-  .cta-band .btn-primary { position: relative; font-size: 1rem; padding: 18px 44px; }
-
-  /* ── FOOTER ── */
-  footer {
-    background: var(--navy);
-    padding: 50px 40px 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 24px;
-  }
-
-  .footer-logo-script {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 2.2rem;
-    color: var(--pink);
-  }
-
-  .footer-links {
-    display: flex;
-    gap: 28px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .footer-links a {
-    color: rgba(255,255,255,0.5);
-    text-decoration: none;
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-
-  .footer-links a:hover { color: var(--pink); }
-
-  .footer-copy {
-    color: rgba(255,255,255,0.25);
-    font-size: 0.75rem;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    width: 100%;
-    padding-top: 24px;
-    margin-top: 4px;
-  }
-
-  /* ── ANIMATIONS ── */
-  .fade-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 768px) {
-    nav ul { display: none; }
-    .about-grid, .services-grid, .why-grid, .testimonials-grid { grid-template-columns: 1fr; }
-    .process-steps { grid-template-columns: repeat(2, 1fr); }
-    .process-steps::before { display: none; }
-    .section { padding: 60px 24px; }
-    .services-section, .process-section, .cta-band { padding: 60px 24px; }
-    footer { padding: 40px 24px 24px; }
-    nav { padding: 16px 24px; }
-    .hero { padding: 60px 24px 70px; }
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lightning Mclean — Cleaning Services · Corner Brook, NL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="logo">
-    <span class="logo-script"><span class="logo-star"><svg width="16" height="16" viewBox="0 0 10 10" fill="currentColor"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg></span> Lightning McLean</span>
-    <span class="logo-sub">Window Services</span>
-  </div>
-  <ul>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#why">Why Us</a></li>
-    <li><a href="#process">How It Works</a></li>
-    <li><a href="#reviews">Reviews</a></li>
-    <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
-  </ul>
-</nav>
+  <!-- NOISE OVERLAY -->
+  <div class="noise-overlay" aria-hidden="true"></div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-stripes"></div>
-  <div class="hero-badge">
-    <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg>
-    Serving the Netherlands
-    <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg>
-  </div>
-  <h1>
-    Clean Windows,<span>Done Right.</span>
-  </h1>
-  <p class="hero-sub">World class service at a fair price. We won't quit until the job's done right — and your windows are spotless.</p>
-  <div class="hero-btns">
-    <a href="#contact" class="btn-primary">Get a Free Quote</a>
-    <a href="#services" class="btn-outline">Our Services</a>
-  </div>
-</section>
+  <!-- ══════════════════════════════════════
+       NAVIGATION
+  ══════════════════════════════════════ -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">
+        <span class="logo-script">Lightning</span>
+        <span class="logo-block">Mclean</span>
+        <span class="logo-sub">Cleaning Services</span>
+      </a>
 
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-inner">
-    <span class="ticker-item">Window Cleaning</span><span class="ticker-dot"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor" style="opacity:0.6"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg></span>
-    <span class="ticker-item">Power Washing</span><span class="ticker-dot"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor" style="opacity:0.6"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg></span>
-    <span class="ticker-item">Soft Wash</span><span class="ticker-dot"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor" style="opacity:0.6"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg></span>
-    <span class="ticker-item">Insured &amp; Reliable</span><span class="ticker-dot"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor" style="opacity:0.6"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg></span>
-    <span class="ticker-item">Quote in 24 Hours</span><span class="ticker-dot"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor" style="opacity:0.6"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg></span>
-    <span class="ticker-item">Window Cleaning</span><span class="ticker-dot"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor" style="opacity:0.6"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg></span>
-    <span class="ticker-item">Power Washing</span><span class="ticker-dot"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor" style="opacity:0.6"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg></span>
-    <span class="ticker-item">Soft Wash</span><span class="ticker-dot"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor" style="opacity:0.6"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg></span>
-    <span class="ticker-item">Insured &amp; Reliable</span><span class="ticker-dot"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor" style="opacity:0.6"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg></span>
-    <span class="ticker-item">Quote in 24 Hours</span><span class="ticker-dot"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor" style="opacity:0.6"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg></span>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#why">Why Us</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════
+       HERO
+  ══════════════════════════════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-stripes" aria-hidden="true"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <svg width="12" height="12" viewBox="0 0 10 10" fill="currentColor"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg>
+        Corner Brook, NL — Est. 2025
+      </div>
+      <h1 class="hero-title">
+        Your Space,<br>
+        <em class="hero-accent">Spotless.</em>
+      </h1>
+      <p class="hero-sub">Professional residential &amp; commercial cleaning services. Windows, floors, real estate, and more — done right the first time.</p>
+      <div class="hero-btns">
+        <a href="tel:+17092168019" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Call Us Now
+        </a>
+        <a href="#services" class="btn-outline">See Our Services</a>
+      </div>
+    </div>
+
+    <!-- Hero image block -->
+    <div class="hero-image-wrap">
+      <div class="hero-img-frame">
+        <img
+          src="images/hero-team.jpg"
+          alt="Lightning Mclean cleaning team at work"
+          class="hero-img"
+          onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')"
+        />
+        <div class="img-placeholder-label">hero-team.jpg</div>
+      </div>
+      <div class="hero-stat-chip chip-1">
+        <span class="chip-num">24hr</span>
+        <span class="chip-text">Quote Turnaround</span>
+      </div>
+      <div class="hero-stat-chip chip-2">
+        <span class="chip-num">100%</span>
+        <span class="chip-text">Satisfaction Promise</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       TICKER
+  ══════════════════════════════════════ -->
+  <div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker-track">
+      <span>Window Cleaning</span>
+      <span class="ticker-dot">✦</span>
+      <span>Residential Cleaning</span>
+      <span class="ticker-dot">✦</span>
+      <span>Commercial Cleaning</span>
+      <span class="ticker-dot">✦</span>
+      <span>Real Estate Cleaning</span>
+      <span class="ticker-dot">✦</span>
+      <span>Debris Removal</span>
+      <span class="ticker-dot">✦</span>
+      <span>Window Cleaning</span>
+      <span class="ticker-dot">✦</span>
+      <span>Residential Cleaning</span>
+      <span class="ticker-dot">✦</span>
+      <span>Commercial Cleaning</span>
+      <span class="ticker-dot">✦</span>
+      <span>Real Estate Cleaning</span>
+      <span class="ticker-dot">✦</span>
+      <span>Debris Removal</span>
+      <span class="ticker-dot">✦</span>
+    </div>
   </div>
-</div>
 
-<!-- ABOUT -->
-<div style="max-width:1100px; margin: 0 auto; padding: 80px 40px;">
-  <div class="section-label">Our Story</div>
-  <div class="section-title">We Believe in Bringing Back the Lost Art…</div>
-
-  <div class="about-grid">
-    <div class="about-text fade-up">
-      <p>Lightning McLean is founded on the idea of world class service at a fair price. We aim to make your property shine — and your experience with us even brighter.</p>
-      <p>We take pride in our work, no matter the project. Whether we're cleaning your windows, power washing your walkways, or giving your home a soft wash, we treat your property — and your time — with the utmost respect.</p>
-      <div class="stats-row">
-        <div class="stat-box">
-          <div class="stat-number">24h</div>
-          <div class="stat-desc">Quote turnaround</div>
+  <!-- ══════════════════════════════════════
+       ABOUT
+  ══════════════════════════════════════ -->
+  <section class="about-section" id="about">
+    <div class="container about-grid">
+      <div class="about-images">
+        <div class="about-img-primary img-card fade-up">
+          <img
+            src="images/about-work1.jpg"
+            alt="Lightning Mclean team member cleaning"
+            onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')"
+          />
+          <div class="img-placeholder-label">about-work1.jpg</div>
         </div>
-        <div class="stat-box">
-          <div class="stat-number">100%</div>
-          <div class="stat-desc">Satisfaction goal</div>
+        <div class="about-img-secondary img-card fade-up" style="transition-delay:0.12s">
+          <img
+            src="images/about-work2.jpg"
+            alt="Lightning Mclean exterior job"
+            onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')"
+          />
+          <div class="img-placeholder-label">about-work2.jpg</div>
         </div>
-        <div class="stat-box">
-  <div class="stat-number">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="#F0C040" style="vertical-align:middle;margin-right:2px"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-    5.0
-  </div>
-          <div class="stat-desc">Customer rating</div>
+        <div class="about-badge-float">
+          <span>Lightning<br>Fast.</span>
         </div>
       </div>
-    </div>
-    <div class="about-visual fade-up" style="transition-delay: 0.15s">
-      <div class="about-visual-inner">
-        <svg width="64" height="64" viewBox="0 0 10 10" fill="#E8836A"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg>
-        <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:1.8rem; color:#fff; margin-top: 12px;">Lightning McLean</div>
-        <div class="stat-label">Window Services · NL</div>
+      <div class="about-text fade-up" style="transition-delay:0.08s">
+        <div class="section-label">Who We Are</div>
+        <h2 class="section-title">Our Services,<br>Your Solution.</h2>
+        <p class="about-body">Lightning Mclean was built on one simple belief: every space deserves to shine. Based in Corner Brook, NL, we bring professional-grade cleaning to homes, businesses, and real estate properties — all at a fair price.</p>
+        <p class="about-body">We take pride in our work no matter the project. Whether it's sparkling windows, a spotless commercial space, or a move-out deep clean, we don't leave until the job is done right and you're completely satisfied.</p>
+        <div class="about-contact-row">
+          <a href="tel:+17092168019" class="about-contact-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            (709) 216-8019
+          </a>
+          <a href="mailto:lightningmclean25@gmail.com" class="about-contact-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            lightningmclean25@gmail.com
+          </a>
+        </div>
+        <a href="#contact" class="btn-primary" style="margin-top:8px;display:inline-flex;align-items:center;gap:10px;">Let's Make It Shine</a>
       </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- SERVICES -->
-<section class="services-section" id="services">
-  <div class="services-inner">
-    <div class="section-label" style="color: var(--pink-light)">What We Do</div>
-    <div class="section-title" style="color: var(--white)">Our Services</div>
-    <div class="services-grid">
-      <div class="service-card fade-up">
-        <!-- Window icon -->
-        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/>
-        </svg>
-        <div class="service-name">Window Cleaning</div>
-        <p class="service-desc">Interior and exterior window cleaning for homes and businesses. Crystal clear results every time, guaranteed.</p>
-      </div>
-      <div class="service-card fade-up" style="transition-delay:0.1s">
-        <!-- Water drop / pressure icon -->
-        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2C12 2 5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13z"/>
-        </svg>
-        <div class="service-name">Power Washing</div>
-        <p class="service-desc">High-pressure washing for driveways, walkways, patios, and more. We blast away dirt, grime, and years of buildup.</p>
-      </div>
-      <div class="service-card fade-up" style="transition-delay:0.2s">
-        <!-- House icon -->
-        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/>
-        </svg>
-        <div class="service-name">Soft Wash</div>
-        <p class="service-desc">Chemical-free, gentle soft washing for your home's exterior. Safe on all surfaces — tough on stains and algae.</p>
-      </div>
-      <div class="service-card fade-up" style="transition-delay:0.3s">
-        <!-- Building icon -->
-        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="1"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/>
-        </svg>
-        <div class="service-name">Commercial Cleaning</div>
-        <p class="service-desc">Keep your business looking sharp. Regular service contracts available for offices, storefronts, and more.</p>
-      </div>
-      <div class="service-card fade-up" style="transition-delay:0.4s">
-        <!-- Gutter / pipe icon -->
-        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 6h18v4H3z"/><line x1="7" y1="10" x2="7" y2="18"/><line x1="17" y1="10" x2="17" y2="18"/><path d="M7 18c0 1.1.9 2 2 2h6a2 2 0 0 0 2-2"/>
-        </svg>
-        <div class="service-name">Gutter Cleaning</div>
-        <p class="service-desc">Clogged gutters? We'll clear them out and make sure everything flows properly before we leave.</p>
-      </div>
-      <div class="service-card fade-up" style="transition-delay:0.5s">
-        <!-- Sparkle / clean icon -->
-        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-        </svg>
-        <div class="service-name">Deep Detail Clean</div>
-        <p class="service-desc">Full property detail service — windows, frames, sills, and surrounds. Leave it better than we found it.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  <!-- ══════════════════════════════════════
+       SERVICES
+  ══════════════════════════════════════ -->
+  <section class="services-section" id="services">
+    <div class="container">
+      <div class="section-label" style="color:var(--pink)">What We Do</div>
+      <h2 class="section-title" style="color:var(--cream)">Our Services</h2>
+      <div class="services-grid">
 
-<!-- WHY US -->
-<div style="max-width:1100px; margin: 0 auto; padding: 80px 40px;" id="why">
-  <div class="section-label">Why Choose Us</div>
-  <div class="section-title">Clean It Like You Mean It</div>
-  <div class="why-grid">
-    <div class="why-card fade-up">
-      <div class="why-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-        </svg>
-      </div>
-      <div class="why-title">Quick &amp; Easy Quotes</div>
-      <p class="why-desc">Free quotes on all jobs. Call or text and we'll provide a fair quote within 24 hours, then schedule a visit to your property.</p>
-    </div>
-    <div class="why-card fade-up" style="transition-delay:0.1s">
-      <div class="why-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        </svg>
-      </div>
-      <div class="why-title">We're Insured</div>
-      <p class="why-desc">No need to worry. We are fully insured — covering liability, auto, and workers' compensation. Your property is protected.</p>
-    </div>
-    <div class="why-card fade-up" style="transition-delay:0.2s">
-      <div class="why-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-      </div>
-      <div class="why-title">We're Reliable</div>
-      <p class="why-desc">We provide fixed start and end times so you always know when we'll arrive and when we'll be done. No vague windows.</p>
-    </div>
-    <div class="why-card fade-up" style="transition-delay:0.3s">
-      <div class="why-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-        </svg>
-      </div>
-      <div class="why-title">Respect Your Property</div>
-      <p class="why-desc">"Leave it better than you found it" is what we live by. We cover shoes inside, wipe all sills, and clean up after ourselves.</p>
-    </div>
-  </div>
-</div>
+        <div class="service-card fade-up">
+          <div class="service-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M6 8l3 3 3-3 3 3"/></svg>
+          </div>
+          <h3 class="service-name">Window Cleaning</h3>
+          <p class="service-desc">Crystal-clear results inside and out. We clean frames, sills, and glass — leaving zero streaks and zero mess.</p>
+          <div class="service-img img-card">
+            <img src="images/service-window.jpg" alt="Window cleaning service"
+              onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
+            <div class="img-placeholder-label">service-window.jpg</div>
+          </div>
+        </div>
 
-<!-- PROCESS -->
-<section class="process-section" id="process">
-  <div class="process-inner">
-    <div class="section-label" style="color: var(--navy)">How It Works</div>
-    <div class="section-title" style="color: var(--white)">Simple as That</div>
-    <div class="process-steps">
-      <div class="step fade-up">
-        <div class="step-num">1</div>
-        <div class="step-title">Contact Us</div>
-        <p class="step-desc">Call, text, or fill out our form. Tell us what you need and when works for you.</p>
-      </div>
-      <div class="step fade-up" style="transition-delay:0.1s">
-        <div class="step-num">2</div>
-        <div class="step-title">Get Your Quote</div>
-        <p class="step-desc">We'll provide a fair, transparent quote within 24 hours — no hidden fees.</p>
-      </div>
-      <div class="step fade-up" style="transition-delay:0.2s">
-        <div class="step-num">3</div>
-        <div class="step-title">We Show Up</div>
-        <p class="step-desc">Our team arrives on time at the agreed hour, ready to work.</p>
-      </div>
-      <div class="step fade-up" style="transition-delay:0.3s">
-        <div class="step-num">4</div>
-        <div class="step-title">Spotless Result</div>
-        <p class="step-desc">We don't leave until the job's done right and you're completely happy.</p>
+        <div class="service-card fade-up" style="transition-delay:0.1s">
+          <div class="service-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <h3 class="service-name">Residential Cleaning</h3>
+          <p class="service-desc">Top-to-bottom home cleaning tailored to your schedule. We treat your home with the utmost care and respect.</p>
+          <div class="service-img img-card">
+            <img src="images/service-residential.jpg" alt="Residential cleaning service"
+              onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
+            <div class="img-placeholder-label">service-residential.jpg</div>
+          </div>
+        </div>
+
+        <div class="service-card fade-up" style="transition-delay:0.2s">
+          <div class="service-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+          </div>
+          <h3 class="service-name">Commercial Cleaning</h3>
+          <p class="service-desc">Keep your business looking sharp. We handle offices, storefronts, and commercial spaces on your schedule.</p>
+          <div class="service-img img-card">
+            <img src="images/service-commercial.jpg" alt="Commercial cleaning service"
+              onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
+            <div class="img-placeholder-label">service-commercial.jpg</div>
+          </div>
+        </div>
+
+        <div class="service-card fade-up" style="transition-delay:0.3s">
+          <div class="service-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3H9a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
+          </div>
+          <h3 class="service-name">Real Estate Cleaning</h3>
+          <p class="service-desc">Move-in ready, every time. Deep cleans for listings and handovers that make a lasting first impression.</p>
+          <div class="service-img img-card">
+            <img src="images/service-realestate.jpg" alt="Real estate cleaning service"
+              onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
+            <div class="img-placeholder-label">service-realestate.jpg</div>
+          </div>
+        </div>
+
+        <div class="service-card fade-up" style="transition-delay:0.4s">
+          <div class="service-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </div>
+          <h3 class="service-name">Debris Removal</h3>
+          <p class="service-desc">Clear out the clutter. We remove debris efficiently so your space is clean, safe, and ready to use.</p>
+          <div class="service-img img-card">
+            <img src="images/service-debris.jpg" alt="Debris removal service"
+              onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
+            <div class="img-placeholder-label">service-debris.jpg</div>
+          </div>
+        </div>
+
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- TESTIMONIALS -->
-<div style="max-width:1100px; margin: 0 auto; padding: 80px 40px;" id="reviews">
-  <div class="section-label">Happy Clients</div>
-  <div class="section-title">What People Say</div>
-  <div class="testimonials-grid">
-    <div class="testimonial fade-up">
-      <div class="stars">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+  <!-- ══════════════════════════════════════
+       WHY CHOOSE US
+  ══════════════════════════════════════ -->
+  <section class="why-section" id="why">
+    <div class="container">
+      <div class="section-label">Why Choose Us</div>
+      <h2 class="section-title">Clean It Like<br>You Mean It</h2>
+      <div class="why-grid">
+
+        <div class="why-card fade-up">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3 class="why-title">Quick &amp; Easy Quotes</h3>
+          <p class="why-desc">Free quotes on all jobs. Call or text and we'll respond within 24 hours. No runaround, no pressure.</p>
+        </div>
+
+        <div class="why-card fade-up" style="transition-delay:0.1s">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="why-title">Fully Insured</h3>
+          <p class="why-desc">We're fully covered so you never have to worry. Your property and our team are both protected.</p>
+        </div>
+
+        <div class="why-card fade-up" style="transition-delay:0.2s">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3 class="why-title">100% Reliable</h3>
+          <p class="why-desc">Fixed start and end times — always. We understand your time is valuable, and we respect it completely.</p>
+        </div>
+
+        <div class="why-card fade-up" style="transition-delay:0.3s">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <h3 class="why-title">Respect Your Property</h3>
+          <p class="why-desc">"Leave it better than we found it." We cover shoes indoors, wipe all sills, and clean up completely after every job.</p>
+        </div>
+
       </div>
-      <p class="testimonial-text">"Incredible work. My windows have never looked this clear — and the team was professional, on time, and left zero mess behind."</p>
-      <div class="testimonial-author">— Jan van der Berg</div>
     </div>
-    <div class="testimonial fade-up" style="transition-delay:0.1s">
-      <div class="stars">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PROCESS
+  ══════════════════════════════════════ -->
+  <section class="process-section" id="process">
+    <div class="container">
+      <div class="section-label" style="color:var(--pink)">How It Works</div>
+      <h2 class="section-title" style="color:var(--cream)">Simple as That</h2>
+      <div class="process-steps">
+
+        <div class="process-step fade-up">
+          <div class="step-num">01</div>
+          <div class="step-connector" aria-hidden="true"></div>
+          <h3 class="step-title">Reach Out</h3>
+          <p class="step-desc">Call, text, or email us. Tell us what you need and when works best.</p>
+        </div>
+
+        <div class="process-step fade-up" style="transition-delay:0.1s">
+          <div class="step-num">02</div>
+          <div class="step-connector" aria-hidden="true"></div>
+          <h3 class="step-title">Get Your Quote</h3>
+          <p class="step-desc">We respond within 24 hours with a fair, transparent quote — no hidden fees.</p>
+        </div>
+
+        <div class="process-step fade-up" style="transition-delay:0.2s">
+          <div class="step-num">03</div>
+          <div class="step-connector" aria-hidden="true"></div>
+          <h3 class="step-title">We Show Up</h3>
+          <p class="step-desc">Our team arrives on time with everything we need, ready to work.</p>
+        </div>
+
+        <div class="process-step fade-up" style="transition-delay:0.3s">
+          <div class="step-num">04</div>
+          <h3 class="step-title">Spotless Result</h3>
+          <p class="step-desc">We don't leave until the job is done right and you're completely satisfied.</p>
+        </div>
+
       </div>
-      <p class="testimonial-text">"Got a quote within hours of reaching out, and they fit me in the next day. Absolutely brilliant service from start to finish."</p>
-      <div class="testimonial-author">— Sophie M.</div>
     </div>
-    <div class="testimonial fade-up" style="transition-delay:0.2s">
-      <div class="stars">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="#F0C040"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       GALLERY STRIP
+  ══════════════════════════════════════ -->
+  <section class="gallery-strip">
+    <div class="gallery-track">
+      <div class="gallery-item img-card">
+        <img src="images/gallery-1.jpg" alt="Lightning Mclean work photo 1"
+          onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
+        <div class="img-placeholder-label">gallery-1.jpg</div>
       </div>
-      <p class="testimonial-text">"Used them for a power wash on my driveway and soft wash on the house exterior. Results were stunning. Will be a regular customer."</p>
-      <div class="testimonial-author">— Daan K.</div>
+      <div class="gallery-item img-card">
+        <img src="images/gallery-2.jpg" alt="Lightning Mclean work photo 2"
+          onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
+        <div class="img-placeholder-label">gallery-2.jpg</div>
+      </div>
+      <div class="gallery-item img-card">
+        <img src="images/gallery-3.jpg" alt="Lightning Mclean work photo 3"
+          onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
+        <div class="img-placeholder-label">gallery-3.jpg</div>
+      </div>
+      <div class="gallery-item img-card">
+        <img src="images/gallery-4.jpg" alt="Lightning Mclean work photo 4"
+          onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
+        <div class="img-placeholder-label">gallery-4.jpg</div>
+      </div>
+      <div class="gallery-item img-card">
+        <img src="images/gallery-5.jpg" alt="Lightning Mclean work photo 5"
+          onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
+        <div class="img-placeholder-label">gallery-5.jpg</div>
+      </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- CTA -->
-<section class="cta-band" id="contact">
-  <h2>Ready for <span>Sparkling</span><br>Clean Windows?</h2>
-  <p>Get your free quote within 24 hours. No pressure, no hassle — just spotless results.</p>
-  <a href="tel:+31000000000" class="btn-primary" style="display:inline-flex;align-items:center;gap:10px;">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-    Call or Text Us Today
-  </a>
-</section>
+  <!-- ══════════════════════════════════════
+       TESTIMONIALS
+  ══════════════════════════════════════ -->
+  <section class="testimonials-section" id="reviews">
+    <div class="container">
+      <div class="section-label">Happy Clients</div>
+      <h2 class="section-title">What People Say</h2>
+      <div class="testimonials-grid">
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo-script">
-    <svg width="16" height="16" viewBox="0 0 10 10" fill="#E8836A" style="vertical-align:middle;margin-right:6px"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8"/></svg>
-    Lightning McLean
-  </div>
-  <div class="footer-links">
-    <a href="#services">Services</a>
-    <a href="#why">Why Us</a>
-    <a href="#process">How It Works</a>
-    <a href="#reviews">Reviews</a>
-    <a href="#contact">Contact</a>
-  </div>
-  <div class="footer-copy">© 2026 Lightning McLean Window Services · Netherlands · All rights reserved</div>
-</footer>
+        <div class="testimonial fade-up">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"Absolutely incredible work. My windows have never been this clear. The team was professional, on time, and left zero mess behind. Highly recommend!"</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">JB</div>
+            <div>
+              <strong>Jamie B.</strong>
+              <span>Corner Brook, NL</span>
+            </div>
+          </div>
+        </div>
 
-<script>
-  // Fade-up on scroll
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12 });
+        <div class="testimonial fade-up" style="transition-delay:0.1s">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"Got a quote within hours of reaching out, and they fit me in the very next day. Fast, friendly, and thorough. My house looks brand new."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">SR</div>
+            <div>
+              <strong>Sarah R.</strong>
+              <span>Corner Brook, NL</span>
+            </div>
+          </div>
+        </div>
 
-  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
-</script>
+        <div class="testimonial fade-up" style="transition-delay:0.2s">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"Used them for a real estate clean on a listing. The place looked spotless — better than the day it was built. Clients were blown away."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">MK</div>
+            <div>
+              <strong>Mark K.</strong>
+              <span>Realtor, NL</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CTA BAND
+  ══════════════════════════════════════ -->
+  <section class="cta-section" id="contact">
+    <div class="cta-inner">
+      <div class="cta-bg-decor" aria-hidden="true"></div>
+      <div class="section-label" style="color:var(--pink)">Ready to Shine?</div>
+      <h2 class="cta-title">Let's Make Your<br><em>Space Shine</em> ✦</h2>
+      <p class="cta-sub">Get your free quote within 24 hours. No pressure, no hassle — just spotless results you can count on.</p>
+      <div class="cta-btns">
+        <a href="tel:+17092168019" class="btn-primary btn-large">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          (709) 216-8019
+        </a>
+        <a href="mailto:lightningmclean25@gmail.com" class="btn-outline btn-large">Email Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <span class="logo-script" style="font-size:1.8rem;">Lightning</span>
+          <span class="logo-block" style="font-size:1.2rem;">Mclean</span>
+        </div>
+        <p class="footer-tagline">Our Services, Your Solution.</p>
+        <p class="footer-location">📍 Corner Brook, NL, Canada</p>
+      </div>
+
+      <div class="footer-links-col">
+        <strong>Navigate</strong>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#why">Why Us</a>
+        <a href="#process">How It Works</a>
+        <a href="#reviews">Reviews</a>
+      </div>
+
+      <div class="footer-links-col">
+        <strong>Contact</strong>
+        <a href="tel:+17092168019">(709) 216-8019</a>
+        <a href="tel:+17096407661">(709) 640-7661</a>
+        <a href="mailto:lightningmclean25@gmail.com">lightningmclean25@gmail.com</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Lightning Mclean Cleaning Services · Corner Brook, NL</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
