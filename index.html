@@ -11,12 +11,8 @@
 </head>
 <body>
 
-  <!-- NOISE OVERLAY -->
   <div class="noise-overlay" aria-hidden="true"></div>
 
-  <!-- ══════════════════════════════════════
-       NAVIGATION
-  ══════════════════════════════════════ -->
   <nav id="navbar">
     <div class="nav-inner">
       <a href="#hero" class="nav-logo">
@@ -24,11 +20,9 @@
         <span class="logo-block">Mclean</span>
         <span class="logo-sub">Cleaning Services</span>
       </a>
-
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
-
       <ul class="nav-links" id="nav-links">
         <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
@@ -40,9 +34,6 @@
     </div>
   </nav>
 
-  <!-- ══════════════════════════════════════
-       HERO
-  ══════════════════════════════════════ -->
   <section class="hero" id="hero">
     <div class="hero-bg-stripes" aria-hidden="true"></div>
     <div class="hero-content">
@@ -63,16 +54,9 @@
         <a href="#services" class="btn-outline">See Our Services</a>
       </div>
     </div>
-
     <div class="hero-image-wrap">
       <div class="hero-img-frame">
-        <img
-          src="./hero-team.jpg"
-          alt="Lightning Mclean cleaning team at work"
-          class="hero-img"
-          onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')"
-        />
-        <div class="img-placeholder-label">hero-team.jpg</div>
+        <img src="./hero-team.jpg" alt="Lightning Mclean cleaning team at work" class="hero-img" style="object-position: center top;" />
       </div>
       <div class="hero-stat-chip chip-1">
         <span class="chip-num">24hr</span>
@@ -85,51 +69,29 @@
     </div>
   </section>
 
-  <!-- TICKER -->
   <div class="ticker-wrap" aria-hidden="true">
     <div class="ticker-track">
-      <span>Window Cleaning</span>
-      <span class="ticker-dot">✦</span>
-      <span>Residential Cleaning</span>
-      <span class="ticker-dot">✦</span>
-      <span>Commercial Cleaning</span>
-      <span class="ticker-dot">✦</span>
-      <span>Real Estate Cleaning</span>
-      <span class="ticker-dot">✦</span>
-      <span>Debris Removal</span>
-      <span class="ticker-dot">✦</span>
-      <span>Window Cleaning</span>
-      <span class="ticker-dot">✦</span>
-      <span>Residential Cleaning</span>
-      <span class="ticker-dot">✦</span>
-      <span>Commercial Cleaning</span>
-      <span class="ticker-dot">✦</span>
-      <span>Real Estate Cleaning</span>
-      <span class="ticker-dot">✦</span>
-      <span>Debris Removal</span>
-      <span class="ticker-dot">✦</span>
+      <span>Window Cleaning</span><span class="ticker-dot">✦</span>
+      <span>Residential Cleaning</span><span class="ticker-dot">✦</span>
+      <span>Commercial Cleaning</span><span class="ticker-dot">✦</span>
+      <span>Real Estate Cleaning</span><span class="ticker-dot">✦</span>
+      <span>Debris Removal</span><span class="ticker-dot">✦</span>
+      <span>Window Cleaning</span><span class="ticker-dot">✦</span>
+      <span>Residential Cleaning</span><span class="ticker-dot">✦</span>
+      <span>Commercial Cleaning</span><span class="ticker-dot">✦</span>
+      <span>Real Estate Cleaning</span><span class="ticker-dot">✦</span>
+      <span>Debris Removal</span><span class="ticker-dot">✦</span>
     </div>
   </div>
 
-  <!-- ABOUT -->
   <section class="about-section" id="about">
     <div class="container about-grid">
       <div class="about-images">
         <div class="about-img-primary img-card fade-up">
-          <img
-            src="./about-work1.jpg"
-            alt="Lightning Mclean team member cleaning"
-            onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')"
-          />
-          <div class="img-placeholder-label">about-work1.jpg</div>
+          <img src="./about-work1.jpg" alt="Lightning Mclean team member cleaning" />
         </div>
         <div class="about-img-secondary img-card fade-up" style="transition-delay:0.12s">
-          <img
-            src="./about-work2.jpg"
-            alt="Lightning Mclean exterior job"
-            onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')"
-          />
-          <div class="img-placeholder-label">about-work2.jpg</div>
+          <img src="./about-work2.jpg" alt="Lightning Mclean exterior job" />
         </div>
         <div class="about-badge-float">
           <span>Lightning<br>Fast.</span>
@@ -155,7 +117,6 @@
     </div>
   </section>
 
-  <!-- SERVICES -->
   <section class="services-section" id="services">
     <div class="container">
       <div class="section-label" style="color:var(--pink)">What We Do</div>
@@ -169,9 +130,7 @@
           <h3 class="service-name">Window Cleaning</h3>
           <p class="service-desc">Crystal-clear results inside and out. We clean frames, sills, and glass — leaving zero streaks and zero mess.</p>
           <div class="service-img img-card">
-            <img src="./service-window.jpg" alt="Window cleaning service"
-              onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
-            <div class="img-placeholder-label">service-window.jpg</div>
+            <img src="./service-window.jpg" alt="Window cleaning service" />
           </div>
         </div>
 
@@ -182,9 +141,7 @@
           <h3 class="service-name">Residential Cleaning</h3>
           <p class="service-desc">Top-to-bottom home cleaning tailored to your schedule. We treat your home with the utmost care and respect.</p>
           <div class="service-img img-card">
-            <img src="./service-residential.jpg" alt="Residential cleaning service"
-              onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
-            <div class="img-placeholder-label">service-residential.jpg</div>
+            <img src="./service-residential.jpg" alt="Residential cleaning service" />
           </div>
         </div>
 
@@ -195,9 +152,7 @@
           <h3 class="service-name">Commercial Cleaning</h3>
           <p class="service-desc">Keep your business looking sharp. We handle offices, storefronts, and commercial spaces on your schedule.</p>
           <div class="service-img img-card">
-            <img src="./service-commercial.jpg" alt="Commercial cleaning service"
-              onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
-            <div class="img-placeholder-label">service-commercial.jpg</div>
+            <img src="./service-commercial.jpg" alt="Commercial cleaning service" />
           </div>
         </div>
 
@@ -208,9 +163,7 @@
           <h3 class="service-name">Real Estate Cleaning</h3>
           <p class="service-desc">Move-in ready, every time. Deep cleans for listings and handovers that make a lasting first impression.</p>
           <div class="service-img img-card">
-            <img src="./service-realestate.jpg" alt="Real estate cleaning service"
-              onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
-            <div class="img-placeholder-label">service-realestate.jpg</div>
+            <img src="./service-realestate.jpg" alt="Real estate cleaning service" />
           </div>
         </div>
 
@@ -221,9 +174,7 @@
           <h3 class="service-name">Debris Removal</h3>
           <p class="service-desc">Clear out the clutter. We remove debris efficiently so your space is clean, safe, and ready to use.</p>
           <div class="service-img img-card">
-            <img src="./service-debris.jpg" alt="Debris removal service"
-              onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
-            <div class="img-placeholder-label">service-debris.jpg</div>
+            <img src="./service-debris.jpg" alt="Debris removal service" />
           </div>
         </div>
 
@@ -231,37 +182,28 @@
     </div>
   </section>
 
-  <!-- WHY CHOOSE US -->
   <section class="why-section" id="why">
     <div class="container">
       <div class="section-label">Why Choose Us</div>
       <h2 class="section-title">Clean It Like<br>You Mean It</h2>
       <div class="why-grid">
         <div class="why-card fade-up">
-          <div class="why-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
+          <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
           <h3 class="why-title">Quick &amp; Easy Quotes</h3>
           <p class="why-desc">Free quotes on all jobs. Call or text and we'll respond within 24 hours. No runaround, no pressure.</p>
         </div>
         <div class="why-card fade-up" style="transition-delay:0.1s">
-          <div class="why-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
+          <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <h3 class="why-title">Fully Insured</h3>
           <p class="why-desc">We're fully covered so you never have to worry. Your property and our team are both protected.</p>
         </div>
         <div class="why-card fade-up" style="transition-delay:0.2s">
-          <div class="why-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
+          <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
           <h3 class="why-title">100% Reliable</h3>
           <p class="why-desc">Fixed start and end times — always. We understand your time is valuable, and we respect it completely.</p>
         </div>
         <div class="why-card fade-up" style="transition-delay:0.3s">
-          <div class="why-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          </div>
+          <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
           <h3 class="why-title">Respect Your Property</h3>
           <p class="why-desc">"Leave it better than we found it." We cover shoes indoors, wipe all sills, and clean up completely after every job.</p>
         </div>
@@ -269,7 +211,6 @@
     </div>
   </section>
 
-  <!-- PROCESS -->
   <section class="process-section" id="process">
     <div class="container">
       <div class="section-label" style="color:var(--pink)">How It Works</div>
@@ -302,38 +243,26 @@
     </div>
   </section>
 
-  <!-- GALLERY STRIP -->
   <section class="gallery-strip">
     <div class="gallery-track">
       <div class="gallery-item img-card">
-        <img src="./gallery-1.jpg" alt="Lightning Mclean work photo 1"
-          onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
-        <div class="img-placeholder-label">gallery-1.jpg</div>
+        <img src="./gallery-1.jpg" alt="Lightning Mclean work photo 1" />
       </div>
       <div class="gallery-item img-card">
-        <img src="./gallery-2.jpg" alt="Lightning Mclean work photo 2"
-          onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
-        <div class="img-placeholder-label">gallery-2.jpg</div>
+        <img src="./gallery-2.jpg" alt="Lightning Mclean work photo 2" />
       </div>
       <div class="gallery-item img-card">
-        <img src="./gallery-3.jpg" alt="Lightning Mclean work photo 3"
-          onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
-        <div class="img-placeholder-label">gallery-3.jpg</div>
+        <img src="./gallery-3.jpg" alt="Lightning Mclean work photo 3" />
       </div>
       <div class="gallery-item img-card">
-        <img src="./gallery-4.jpg" alt="Lightning Mclean work photo 4"
-          onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
-        <div class="img-placeholder-label">gallery-4.jpg</div>
+        <img src="./gallery-4.jpg" alt="Lightning Mclean work photo 4" />
       </div>
       <div class="gallery-item img-card">
-        <img src="./gallery-5.jpg" alt="Lightning Mclean work photo 5"
-          onerror="this.style.display='none';this.parentElement.classList.add('img-placeholder')" />
-        <div class="img-placeholder-label">gallery-5.jpg</div>
+        <img src="./gallery-5.jpg" alt="Lightning Mclean work photo 5" />
       </div>
     </div>
   </section>
 
-  <!-- TESTIMONIALS -->
   <section class="testimonials-section" id="reviews">
     <div class="container">
       <div class="section-label">Happy Clients</div>
@@ -344,10 +273,7 @@
           <p class="testimonial-text">"Absolutely incredible work. My windows have never been this clear. The team was professional, on time, and left zero mess behind. Highly recommend!"</p>
           <div class="testimonial-author">
             <div class="author-avatar">JB</div>
-            <div>
-              <strong>Jamie B.</strong>
-              <span>Corner Brook, NL</span>
-            </div>
+            <div><strong>Jamie B.</strong><span>Corner Brook, NL</span></div>
           </div>
         </div>
         <div class="testimonial fade-up" style="transition-delay:0.1s">
@@ -355,10 +281,7 @@
           <p class="testimonial-text">"Got a quote within hours of reaching out, and they fit me in the very next day. Fast, friendly, and thorough. My house looks brand new."</p>
           <div class="testimonial-author">
             <div class="author-avatar">SR</div>
-            <div>
-              <strong>Sarah R.</strong>
-              <span>Corner Brook, NL</span>
-            </div>
+            <div><strong>Sarah R.</strong><span>Corner Brook, NL</span></div>
           </div>
         </div>
         <div class="testimonial fade-up" style="transition-delay:0.2s">
@@ -366,17 +289,13 @@
           <p class="testimonial-text">"Used them for a real estate clean on a listing. The place looked spotless — better than the day it was built. Clients were blown away."</p>
           <div class="testimonial-author">
             <div class="author-avatar">MK</div>
-            <div>
-              <strong>Mark K.</strong>
-              <span>Realtor, NL</span>
-            </div>
+            <div><strong>Mark K.</strong><span>Realtor, NL</span></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
   <section class="cta-section" id="contact">
     <div class="cta-inner">
       <div class="cta-bg-decor" aria-hidden="true"></div>
@@ -393,7 +312,6 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-brand">
